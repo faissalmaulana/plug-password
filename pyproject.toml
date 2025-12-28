@@ -1,0 +1,9 @@
+[project]
+name = "plug-password"
+version = "0.1.0"
+description = "Plug Password is a backup password management CLI tool that uses SQLite."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "typer>=0.21.0",
+]
