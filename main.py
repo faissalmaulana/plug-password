@@ -8,8 +8,10 @@ def callback():
     """
     Plug Password
 
-    A tool for managing backup passwords securely using SQlite.
+    A tool for managing backup passwords securely using SQLite.
     """
+
+    raise typer.Exit()
 
 
 if __name__ == "__main__":
