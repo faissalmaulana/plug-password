@@ -1,9 +1,12 @@
 import typer
 
+app = typer.Typer()
 
-def main(name: str):
-    print(f"Hello,{name}!")
+
+@app.command()
+def main():
+    print("Hello, World!!")
 
 
 if __name__ == "__main__":
-    typer.run(main)
+    app()
