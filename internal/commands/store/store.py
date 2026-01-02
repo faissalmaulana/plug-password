@@ -44,7 +44,7 @@ def set_path_directory(path: str):
 @app.command()
 def set(path: Annotated[str, typer.Argument(callback=validate_set_path)]):
     """
-    Set path where the location db directory is stored.
+    Set path where the storage want to stored.
 
     Examples:
         store set /home/user/data
