@@ -30,9 +30,7 @@ class _ConfigApplication:
         """
 
         doc = parse(
-            """[sqlite_directory]
-            location_path = "" # Path where the root directory of db located
-            """
+            """[sqlite_directory]\nlocation_path = "" # Path where the root directory of db located"""
         )
 
         if self.config_file is not None:
