@@ -1,6 +1,7 @@
 import typer
 
 from internal.commands.config import config
+from internal.commands.store import store
 
 app = typer.Typer(
     no_args_is_help=True,
@@ -8,6 +9,7 @@ app = typer.Typer(
 )
 
 app.add_typer(config.app, name="config")
+app.add_typer(store.app, name="store")
 
 
 if __name__ == "__main__":
