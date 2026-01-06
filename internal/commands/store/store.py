@@ -8,7 +8,6 @@ from internal.constants.constants import (
     KEY_STORE_DIRECTORY,
     TABLE_STORE_DIRECTORY,
 )
-from internal.repositories.sqlite.store import SqliteStore
 from internal.services.config.config import config_app
 from internal.services.storage import storage
 
@@ -94,10 +93,7 @@ def init():
 
     try:
         if storage_dir is not None:
-            sqliteRepository = SqliteStore(Path(storage_dir))
-            store = storage.Storage(sqliteRepository)
-
-            store.create()
+            storage.store.create()
             print("Initialized storage...")
 
     except (FileNotFoundError, FileExistsError, Exception) as err:
@@ -105,6 +101,44 @@ def init():
             print("Storage directory is not found")
         elif isinstance(err, FileExistsError) or isinstance(err, Exception):
             print("Storage already initialized")
+
+
+@app.command()
+def status():
+    """
+    Display information about what is my current store
+    """
+    try:
+        current_store = storage.store.get_current_store()
+        print(f"On store {current_store}")
+    except Exception as err:
+        print(err)
+
+
+@app.command()
+def list():
+    """
+    Display all stores's snapshots
+    """
+    try:
+        stores = storage.store.get_all_snapshots()
+        current_store = storage.store.get_current_store()
+
+        display = "Snapshots:\n"
+
+        if len(stores) > 0:
+            for store in stores:
+                if store == current_store:
+                    display += f"*{store}\n"
+                    continue
+
+                display += f"{store}\n"
+        else:
+            display += "There's no snapshot yet."
+
+        print(display)
+    except Exception as err:
+        print(err)
 
 
 if __name__ == "__main__":
