@@ -5,12 +5,11 @@ from typing import Annotated
 import typer
 
 from internal.constants.constants import (
-    DEFAULT_STORAGE_NAME,
     KEY_STORE_DIRECTORY,
     TABLE_STORE_DIRECTORY,
 )
+from internal.repositories.sqlite.store import SqliteStore
 from internal.services.config.config import config_app
-from internal.services.snapshot.snapshot import Snapshot
 from internal.services.storage import storage
 
 app = typer.Typer(no_args_is_help=True, help="Manage Store of plug password")
@@ -71,7 +70,7 @@ def init():
     Initialize empty storage and create accounts table
     """
 
-    storage_dir = config_app.get_value(
+    storage_dir: str | None = config_app.get_value(
         KEY_STORE_DIRECTORY, table_name=TABLE_STORE_DIRECTORY
     )
 
@@ -94,21 +93,13 @@ def init():
                 raise typer.Abort()
 
     try:
-        storage_dir_path = Path(str(storage_dir))
-        storage.storage_app.create_storage_workdir(storage_dir_path)
+        if storage_dir is not None:
+            sqliteRepository = SqliteStore(Path(storage_dir))
+            store = storage.Storage(sqliteRepository)
 
-        initial_snapshot = Snapshot(
-            DEFAULT_STORAGE_NAME.split(".")[0]
-        ).get_snapshot_formatted()
+            store.create()
+            print("Initialized storage...")
 
-        storage_dir_path = storage_dir_path / initial_snapshot
-
-        # If the current storage exist cancel to initialize snapshot
-        storage_dir_path.touch(mode=0o600, exist_ok=False)
-
-        # TODO: Create Accounts table
-
-        print("Initialized storage...")
     except (FileNotFoundError, FileExistsError, Exception) as err:
         if isinstance(err, FileNotFoundError):
             print("Storage directory is not found")
