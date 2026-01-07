@@ -57,7 +57,6 @@ class SqliteStore(Store):
         try:
             with sqlite3.connect(str(self.__db_path)) as conn:
                 cursor = conn.cursor()
-                cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
                 cursor.execute(
                     f"CREATE TABLE {table_name} AS SELECT * FROM accounts WHERE 0"
                 )
@@ -143,7 +142,7 @@ class SqliteStore(Store):
 
             cur.execute(
                 "UPDATE active_table SET table_name = ? WHERE id = 1;",
-                (table_name),
+                (table_name,),
             )
 
         except sqlite3.Error:

@@ -141,5 +141,21 @@ def list():
         print(err)
 
 
+@app.command()
+def switch(
+    snapshot: Annotated[str, typer.Argument()],
+):
+    """
+    Switch current storage to available snapshot
+    """
+
+    try:
+        storage.store.switch_snapshot(snapshot)
+        print(f"Swich to {snapshot}")
+    except Exception as err:
+        print(err)
+        raise
+
+
 if __name__ == "__main__":
     app()

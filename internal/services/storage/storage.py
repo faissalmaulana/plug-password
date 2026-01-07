@@ -45,7 +45,7 @@ storage_dir: str | None = config_app.get_value(
 if storage_dir is None:
     storage_dir = ""
 
-sqliteRepository = SqliteStore(Path(storage_dir))
-store = Storage(sqliteRepository)
+sqlite_repository = SqliteStore(Path(storage_dir))
+store = Storage(sqlite_repository)
 
-__all__ = ["store"]
+__all__ = ["store", "sqlite_repository"]

@@ -1,5 +1,6 @@
 import typer
 
+from internal.commands import accounts
 from internal.commands.config import config
 from internal.commands.store import store
 
@@ -10,6 +11,7 @@ app = typer.Typer(
 
 app.add_typer(config.app, name="config")
 app.add_typer(store.app, name="store")
+app.add_typer(accounts.app, name="account")
 
 
 if __name__ == "__main__":
