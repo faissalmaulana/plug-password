@@ -37,8 +37,8 @@ class SqliteStore(Store):
 
                 return True
 
-        except sqlite3.Error as err:
-            raise err
+        except sqlite3.Error:
+            raise
 
     def get_current_table(self) -> str:
         try:
@@ -50,8 +50,8 @@ class SqliteStore(Store):
                 if row is None:
                     return ""
                 return row[0]
-        except sqlite3.Error as err:
-            raise err
+        except sqlite3.Error:
+            raise
 
     def backup_current_table(self, table_name):
         try:
@@ -64,8 +64,8 @@ class SqliteStore(Store):
                 cursor.execute(f"INSERT INTO {table_name} SELECT * FROM accounts")
 
                 conn.commit()
-        except sqlite3.Error as err:
-            raise err
+        except sqlite3.Error:
+            raise
 
     def switch_table(self, table_name: str) -> None:
         """
@@ -102,8 +102,8 @@ class SqliteStore(Store):
 
                 return [row[0] for row in cur.fetchall()]
 
-        except sqlite3.Error as err:
-            raise err
+        except sqlite3.Error:
+            raise
 
     def __create_and_insert_active_table(
         self, def_table: str, conn: sqlite3.Connection
@@ -146,8 +146,8 @@ class SqliteStore(Store):
                 (table_name),
             )
 
-        except sqlite3.Error as err:
-            raise err
+        except sqlite3.Error:
+            raise
 
     def __create_account_table(self, conn: sqlite3.Connection):
         try:
@@ -157,8 +157,8 @@ class SqliteStore(Store):
                     "CREATE TABLE IF NOT EXISTS accounts(id TEXT NOT NULL PRIMARY KEY,platform TEXT NOT NULL);"
                 )
 
-        except sqlite3.Error as err:
-            raise err
+        except sqlite3.Error:
+            raise
 
     def __table_exists(self, conn: sqlite3.Connection, table_name: str) -> bool:
         cursor = conn.execute(
